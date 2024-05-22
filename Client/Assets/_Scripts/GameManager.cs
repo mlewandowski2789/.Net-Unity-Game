@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private readonly string _serverIp = "localhost:7098";
+    private readonly string _serverIp = "26.180.139.241:7098";
 
     public static GameManager instance;
     public GameObject cam;
