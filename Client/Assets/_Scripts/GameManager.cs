@@ -1,5 +1,6 @@
 
 using SharedLibrary;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private readonly string _serverIp = "localhost:7098";
+
     public static GameManager instance;
     public GameObject cam;
     public Player playerPrefab;
@@ -41,8 +44,9 @@ public class GameManager : MonoBehaviour
     public async void CreateGame()
     {
         menu.HideButtons();
-        var result = await NetworkManager.Get<GameInfo>("https://localhost:7098/game/create");
+        var result = await NetworkManager.Get<GameInfo>($"https://{_serverIp}/game/create");
         _gameId = result.Id;
+        
         _playerId = 0;
         SpawnPlayer();
     }
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour
     public async void JoinGame()
     {
         _gameId = menu.GetInput();
-        var result = await NetworkManager.Get<PlayerInfo>($"https://localhost:7098/game/{_gameId}/join");
+        var result = await NetworkManager.Get<PlayerInfo>($"https://{_serverIp}/game/{_gameId}/join");
         _playerId = result.Id;
         SpawnPlayer();
     }
@@ -61,6 +65,7 @@ public class GameManager : MonoBehaviour
         cam.SetActive(false);
         player = Instantiate(playerPrefab, new Vector3(0, 1, 0), Quaternion.identity);
         player.Init(_playerId);
+        menu.ShowGameId(_gameId);
 
         StartCoroutine(GameLoop());
     }
@@ -79,15 +84,23 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             UpdateGame();
-            yield return new WaitForSeconds(.02f);
+            yield return new WaitForSeconds(.04f);
         }
     }
 
     private async void UpdateGame()
     {
         var playerInfo = player.GetInfo();
+        GameInfo result;
+        try
+        {
+            result = await NetworkManager.Post<GameInfo>($"https://{_serverIp}/game/{_gameId}", playerInfo);
+        }
 
-        var result = await NetworkManager.Post<GameInfo>($"https://localhost:7098/game/{_gameId}", playerInfo);
+        catch (Exception)
+        {
+            return;
+        }
         var players = result.Players;
         players.RemoveAt(_playerId);
 

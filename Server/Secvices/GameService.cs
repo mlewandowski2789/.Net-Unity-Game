@@ -1,4 +1,5 @@
 ﻿using SharedLibrary;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
 
 namespace Server.Secvices;
@@ -33,7 +34,8 @@ public class GameService
             Health = player.Health,
             Bullets = new List<BulletInfo>(player.Bullets),
             Position = new float[] { player.Position[0], player.Position[1], player.Position[2] },
-            Velocity = new float[] { player.Velocity[0], player.Velocity[1], player.Velocity[2] }
+            Velocity = new float[] { player.Velocity[0], player.Velocity[1], player.Velocity[2] },
+            Rotation = new float[] { player.Rotation[0], player.Rotation[1], player.Rotation[2] }
         };
 
     }
@@ -42,4 +44,5 @@ public class GameService
     {
         return games[id] ?? throw new Exception("Game not found");
     }
+
 }

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
 
-	  <PostBuildEvent>copy SharedLibrary.dll $(OutDir)..\..\..\..\Coroutines\Assets\DLLs\SharedLibrary.dll</PostBuildEvent>
+	  <PostBuildEvent>copy SharedLibrary.dll $(OutDir)..\..\..\..\Client\Assets\DLLs\SharedLibrary.dll</PostBuildEvent>
 	  
   </PropertyGroup>
 

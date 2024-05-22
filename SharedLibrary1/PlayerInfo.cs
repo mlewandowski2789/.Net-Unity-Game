@@ -4,6 +4,14 @@ namespace SharedLibrary
 {
     public class PlayerInfo
     {
+        public PlayerInfo() { }
+
+        public PlayerInfo(int id, float health)
+        {
+            Id = id;
+            Health = health;
+        }
+
         public int Id { get; set; }
         public float Health { get; set; }
 

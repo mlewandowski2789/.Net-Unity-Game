@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json.Serialization;
 using Server.Secvices;
 
@@ -16,8 +17,6 @@ if (app.Environment.IsDevelopment())
 {
 
 }
-
-
 
 app.UseHttpsRedirection();
 

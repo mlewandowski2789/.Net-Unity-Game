@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public static class NetworkManager
 {
-
+    
     public static async Task<T> Get<T>(string endpoint)
     {
         var getRequest = CreateRequest(endpoint);
@@ -31,6 +31,7 @@ public static class NetworkManager
     private static UnityWebRequest CreateRequest(string path, RequestType type = RequestType.GET, object data = null)
     {
         var request = new UnityWebRequest(path, type.ToString());
+        request.certificateHandler = new BypassCertificate();
 
         if (data != null)
         {
@@ -50,4 +51,13 @@ public enum RequestType
     GET = 0,
     POST = 1,
     PUT = 2
+}
+
+public class BypassCertificate : CertificateHandler
+{
+    protected override bool ValidateCertificate(byte[] certificateData)
+    {
+        //Simply return true no matter what
+        return true;
+    }
 }

@@ -19,7 +19,7 @@ public class GameController : ControllerBase
     public GameInfo Post(int id, [FromBody] PlayerInfo player)
     {
         _gameService.SetPlayer(id, player.Id, player);
-        var game = _gameService.GetGame(id);
+        var game = new GameInfo(_gameService.GetGame(id));
         return game;
     }
 
